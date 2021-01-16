@@ -1,0 +1,362 @@
+/**
+ * Concurrency is having two tasks run in parallel on separate threads. 
+ * However, asynchronous methods run in parallel but on the same 1 thread.
+ * 
+ * So when tasks are done asynchronously but in multiple threads it's parallel prog,
+ * in single thread it's async as in V8 engine
+ */
+
+// PROTOTYPAL INHERITANCE
+/** 
+ * Simply put, prototypical inheritance refers to the ability to access object properties from 
+ * another object. We use a JavaScript prototype to add new properties and methods to an 
+ * existing object constructor.
+ * 
+ * In Javascript, every object has its own hidden, internal property, [[Prototype]]. 
+ * We can access that [[Prototype]] using the __proto__ property. 
+ * This calls the program to mark the template object as a hidden type. 
+ * 
+ * syntax for accessing and setting the [[Prototype]] property of an object.
+ * 
+ * //using __proto__ to access and set the [[Prototype]] of "anObject"
+ * anObject.__proto__ = someotherObject
+ * 
+ * 
+ * Object.prototype.constructor
+ * All objects have a constructor property. If an object is created without the using a constructor 
+ * function, it will have a constructor property. The constructor property will return a reference 
+ * to the object’s Object constructor function. 
+*/
+
+
+let o1 = {} //o.constructor === Object // true 
+
+let o2 = new Object //o.constructor === Object // true 
+
+let a1 = [] //a.constructor === Array // true 
+
+let a2 = new Array //a.constructor === Array // true 
+
+let n = new Number(3) //n.constructor === Number // true
+
+
+// hasOwnProperty
+// obj.hasOwnProperty(prop)
+
+/**
+ * Envision an object C with a [[Prototype]] property that points to object B. 
+ * Object B’s [[Prototype]] property points to prototype object A. This continues onward, 
+ * forming a kind of chain called the prototype chain.
+ * 
+ * A <- B <- C
+ */
+
+
+let user = { 			//create the user object
+  showAccess: true, 	//create and set showAccess property of user
+  name: "Swagat",
+  age : 27,
+
+  showDetails(){
+    console.log(this.name+" "+this.age);  
+  }
+};
+let premiumUser = {		//repeat of the above for this object
+  ads: false
+};
+
+premiumUser.__proto__ = user;	//user is the prototype of premiumUser
+
+console.log(premiumUser.showAccess);	// "true"
+premiumUser.name = "Paresh";
+premiumUser.showDetails();
+
+/**
+ * it's basically like setting a parent class using __proto__.
+ * This allows the object to have access to parent objects methods and variables
+ */
+
+
+// Call, Apply and Bind
+// Bind
+let pokemon = {
+  name:"pikachu",
+  color:"yellow"
+}
+
+function showPokemon(){
+  console.log(this.name, this.color);
+} 
+console.log("pokemon bind");
+showPokemon.bind(pokemon); // doesn't work
+
+// creates new object and binds pokemon. 'this' of pokemon == pokemon now
+let bound = showPokemon.bind(pokemon); 
+
+bound();
+
+// Call, Apply
+/*
+The main differences between bind() and call() is that the call() method:
+Accepts additional parameters as well
+Executes the function it was called upon right away.
+The call() method does not make a copy of the function it is being called on.
+*/
+
+showPokemon.call(pokemon);
+
+/**************************************************************************/
+// 1
+const obj = {name:"jo", age:26};
+
+obj.age = 28;
+console.log(obj);
+
+// 2
+var v = 1;
+function f(){
+    var v = 2;
+    f2(v);
+}
+
+function f2(a){
+    console.log(a);
+}
+
+f(); // prints 2
+// var is block scoped, but the inside var is referred first inside
+// the function f
+
+//3 
+// sum(10, 20);
+// diff(10, 20);
+
+// function sum(x,y){
+//   return x+y;
+// }
+
+// let diff = function (x, y){
+//   return x-y;
+// }
+// ref error : Cannot access 'diff' before initialization
+
+// http://callbackhell.com/
+
+// https://stackoverflow.com/questions/762011/whats-the-difference-between-using-let-and-var
+
+
+
+/**
+ *  Main difference is scoping rules. Variables declared by var keyword are scoped to the 
+immediate function body (hence the function scope) while let variables are scoped to the 
+immediate enclosing block denoted by { } (hence the block scope).
+*/
+
+function run() {
+  var foo = "Foo";
+  let bar = "Bar";
+
+  console.log(foo, bar); // Foo Bar
+
+  {
+    let baz = "Bazz";
+    console.log(baz); // Bazz
+  }
+
+  // console.log(baz); // ReferenceError
+}
+
+run();
+
+/** 
+ * The reason why let keyword was introduced to the language was function scope is confusing 
+ * and was one of the main sources of bugs in JavaScript.
+*/
+
+var funcs = [];
+// let's create 3 functions
+for (var i = 0; i < 3; i++) {
+  // and store them in funcs
+  funcs[i] = function() {
+    // each should log its value.
+    console.log("My value: " + i);
+  };
+}
+for (var j = 0; j < 3; j++) {
+  // and now let's run each one to see
+  funcs[j]();
+}
+console.log("var i "+i); // 3
+
+/** 
+ * The process above doesn't generate the desired array of functions because i's scope extends 
+ * beyond the iteration of the for block in which each function was created.
+ * 
+ * for(var i =0; i<..) is like var i = 0; for(i = 0; i<..)
+ * var has function scope, so here the functions in the array refer to the global i 
+ * as they maintain the refernce to that variable.
+ * 
+ * If we use let then each function keeps the value of i at the time of the function's creation.
+*/
+let funcsArr = [];
+
+for (let k = 0; k < 3; k++) {
+  // and store them in funcs
+  funcsArr[k] = function() {
+    // each should log its value.
+    console.log("My value: " + k);
+  };
+}
+
+// console.log("let k"+k); // i is undefined
+
+for (let j = 0; j < 3; j++) {
+  // and now let's run each one to see
+  funcsArr[j]();
+}
+
+/** 
+Hoisting
+ * While variables declared with var keyword are hoisted (initialized with undefined before the code is run) 
+ * which means they are accessible in their enclosing scope even before they are declared:
+*/
+function run() {
+  console.log(foo); // undefined
+  var foo = "Foo";
+  console.log(foo); // Foo
+}
+
+run();
+
+/** 
+let loops
+
+let in the loop re-binds it to each iteration of the loop, making sure to re-assign it 
+the value from the end of the previous loop iteration. Consider,
+
+*/
+
+// print '5' 5 times
+for (var i = 0; i < 5; ++i) {
+    setTimeout(function () {
+        console.log(i);
+    }, 1000);  
+}
+
+// However, replace var with let
+
+// print 1, 2, 3, 4, 5. now
+for (let i = 0; i < 5; ++i) {
+    setTimeout(function () {
+        console.log(i);
+    }, 1000);  
+}
+//REMEMBER TO WHICH i THE FUNC IS BOUND, IF VAR THEN THE REF EXISTS, 
+// IF LET THEN VAR IS GONE SO i IS LAST REFERENCED VAL
+/**
+Because let creates a new lexical environment with those names for 
+a) the initialiser expression 
+b) each iteration (previously to evaluating the increment expression), 
+
+Yep they are hoisted, but behave as if not hoisted because of the (drum roll) 
+Temporal Dead Zone - a very dramatic name for an identifier not being accessible until it's declared
+*/
+
+// https://stackoverflow.com/questions/37576685/using-async-await-with-a-foreach-loop
+/** */
+// import fs from 'fs-promise';
+
+async function printFiles () {
+  const files = await getFilePaths() // Assume this works fine
+
+  files.forEach(async (file) => {
+    const contents = await fs.readFile(file, 'utf8')
+    console.log(contents)
+  })
+}
+
+printFiles();
+
+/**
+Reading in sequence
+If you want to read the files in sequence, you cannot use forEach indeed. 
+Just use a modern for … of loop instead, in which await will work as expected:
+ */
+async function printFiles () {
+  const files = await getFilePaths();
+
+  for (const file of files) {
+    const contents = await fs.readFile(file, 'utf8');
+    console.log(contents);
+  }
+}
+/** 
+Reading in parallel
+If you want to read the files in parallel, you cannot use forEach indeed. 
+Each of the async callback function calls does return a promise, 
+but you're throwing them away instead of awaiting them. 
+
+Just use map instead, and you can await the array of promises that you'll get with Promise.all:
+*/
+async function printFiles () {
+  const files = await getFilePaths();
+
+  await Promise.all(files.map(async (file) => {
+    const contents = await fs.readFile(file, 'utf8')
+    console.log(contents)
+  }));
+}
+
+// https://medium.com/@manjuladube/understanding-deep-and-shallow-copy-in-javascript-13438bad941c
+
+
+// shallow copy vs deep copy
+/**
+ * shallow copy is just copying the reference to the object
+ * deep copy is a new object with its own separate address and body
+ */
+let emp1 = {
+  name:"SWAGAT", age: 27
+}
+
+let emp2 = emp1;
+console.log(emp2.name);
+
+// For simple JSON objects, the simplest way would be:
+let emp3 = JSON.parse(JSON.stringify(emp1));
+
+emp1.name = "Paresh";
+console.log(emp2.name);
+console.log(emp3.name);
+
+
+// CLOSURE
+let closure = () => {
+  let name = 'Mozilla from inside closure'; // name is a local variable created by init
+  function displayName() { // displayName() is the inner function, a closure
+    console.log(name); // use variable declared in the parent function
+  }
+  displayName();
+  // return displayName;
+}
+
+// let x = closure();
+// x();
+
+/** 
+ * pratcical application is when we want to apply directives using ElementRef and
+ * this is used, it can bind to the context of 
+*/
+
+
+
+// SPLICE vs SLICE
+
+const months = ['Jan', 'March', 'April', 'June'];
+months.splice(1, 0, 'Feb');
+// inserts at index 1
+
+const animals = ['ant', 'bison', 'camel', 'duck', 'elephant'];
+console.log(animals.slice(2));
+// expected output: Array ["camel", "duck", "elephant"]
+

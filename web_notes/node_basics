@@ -1,0 +1,182 @@
+Single threaded means a single stack.
+
+Event loop is the simplest thing in V8 engine
+It basically checks if the stack is empty, then it runs something from teh callback queue.
+
+setTimeOut is a browser API, so any call to it is like an API call, and after it
+resolvers, it is added to the callback queue which is then processed as soon as 
+the stack is empty.
+
+Any blocking code which can be moved to libuv is moved and a callback is 
+registered. SO when it resolves, it is picked up from the callback queue 
+
+while is a blocking call, forEach is also blocking
+
+Imp modules, fs, cluster, buffer, 
+
+
+BUFFER
+Buffer objects are used to represent a fixed-length sequence of bytes
+
+A Node.js buffer should be more efficient than a typed array. The reason is simply because when a 
+new Node.js Buffer is created it does not need to be initialized to all 0's. Whereas, 
+the HTML5 spec states that initialization of typed arrays must have their values set to 0.
+
+1 .alloc
+// Creates a zero-filled Buffer of length 10.
+const buf1 = Buffer.alloc(10);
+const buf5 = Buffer.from([257, 257.5, -255, '1']);
+
+'utf8': Multi-byte encoded Unicode characters
+'base64': Base64 encoding. When creating a Buffer from a string, this encoding will also correctly accept 
+"URL and Filename Safe Alphabet"
+
+Compares buf1 to buf2, typically for the purpose of sorting arrays of Buffer instances. 
+This is equivalent to calling buf1.compare(buf2).
+
+2 .concat
+const buf1 = Buffer.alloc(10);
+const buf2 = Buffer.alloc(14);
+const buf3 = Buffer.alloc(18);
+
+const bufA = Buffer.concat([buf1, buf2, buf3], totalLength);
+Returns a new Buffer which is the result of concatenating all the Buffer instances in the list together.
+
+3 .write
+const buf = Buffer.alloc(256);
+const len = buf.write('\u00bd + \u00bc = \u00be', 0);
+
+
+
+CLUSTER
+Spawn is a command designed to run system commands. 
+But no new V8 instance is created(unless of course your command is another Node command, 
+but in this case you should use fork!) and only one copy of your node module is active on the processor.
+
+Fork is a special instance of spawn, that runs a fresh instance of the V8 engine. 
+Meaning, you can essentially create multiple workers, running on the exact same Node code base, 
+or perhaps a different module for a specific task. This is most useful for creating a worker pool. 
+While node's async event model allows a single core of a machine to be used fairly efficiently, 
+it doesn't allow a node process to make use of multi core machines. Easiest way to accomplish 
+this is to run multiple copies of the same program, on a single processor.
+
+FILE SYSTEM
+The fs module enables interacting with the file system in a way modeled on standard POSIX functions.
+
+1 .unlink for delete
+const fs = require('fs');
+
+2 unlinkSync
+
+try {
+  fs.unlinkSync('/tmp/hello');
+  console.log('successfully deleted /tmp/hello');
+} catch (err) {
+  // handle the error
+}
+
+3 nested callback 
+
+fs.rename('/tmp/hello', '/tmp/world', (err) => {
+  if (err) throw err;
+  console.log('renamed complete');
+});
+
+fs.stat('/tmp/world', (err, stats) => {
+  if (err) throw err;
+  console.log(`stats: ${JSON.stringify(stats)}`);
+});
+
+To correctly order the operations, move the fs.stat() call into the callback of the fs.rename() operation:
+
+fs.rename('/tmp/hello', '/tmp/world', (err) => {
+  if (err) throw err;
+  fs.stat('/tmp/world', (err, stats) => {
+    if (err) throw err;
+    console.log(`stats: ${JSON.stringify(stats)}`);
+  });
+});
+
+Or, use the promise-based API: async await and IIFE
+
+const fs = require('fs/promises');
+
+(async function(from, to) {
+  try {
+    await fs.rename(from, to);
+    const stats = await fs.stat(to);
+    console.log(`stats: ${JSON.stringify(stats)}`);
+  } catch (error) {
+    console.error('there was an error:', error.message);
+  }
+})('/tmp/hello', '/tmp/world');
+
+fs.createReadStream
+fs.exists
+fs.access
+
+const stream = fs.createReadStream('/dev/input/event0', { start: 90, end: 99 });
+
+fs.chmod(path, mode, callback)
+Asynchronously changes the permissions of a file. No arguments other than a possible exception 
+are given to the completion callback.
+
+fs.chmod('my_file.txt', 0o775, (err) => {
+  if (err) throw err;
+  console.log('The permissions for file "my_file.txt" have been changed!');
+});
+
+
+
+CLUSTER
+
+const cluster = require('cluster');
+const http = require('http');
+const numCPUs = require('os').cpus().length;
+
+if (cluster.isMaster) {
+  console.log(`Master ${process.pid} is running`);
+
+  // Fork workers.
+  for (let i = 0; i < numCPUs; i++) {
+    cluster.fork();
+  }
+
+  cluster.on('exit', (worker, code, signal) => {
+    console.log(`worker ${worker.process.pid} died`);
+  });
+} else {
+  // Workers can share any TCP connection
+  // In this case it is an HTTP server
+  http.createServer((req, res) => {
+    res.writeHead(200);
+    res.end('hello world\n');
+  }).listen(8000);
+
+  console.log(`Worker ${process.pid} started`);
+}
+
+Master 3596 is running
+Worker 4324 started
+Worker 4520 started
+Worker 6056 started
+Worker 5644 started
+
+now requests can be redirected to specific ports
+
+if (cluster.isMaster) {
+  const worker = cluster.fork();
+  worker.send('hi there');
+
+} else if (cluster.isWorker) {
+  process.on('message', (msg) => {
+    process.send(msg);
+  });
+}
+
+
+Workers (threads) are useful for performing CPU-intensive JavaScript operations. 
+They do not help much with I/O-intensive work. The Node.js built-in asynchronous I/O operations 
+are more efficient than Workers can be.
+
+

@@ -1,0 +1,167 @@
+https://www.youtube.com/watch?v=ewcoEYS85Co
+
+
+When a client hits a url for the first time, a html doc is sent from 
+server, this html doc has header, body and footer. the whole angular code
+is attached in the body. 
+<router-outlet>
+
+and then to optmize lazy loading is used, which calls a page only when 
+a request is made, so initial rendering is faster.
+
+
+https://www.youtube.com/watch?v=Nehk4tBxD4o
+create a module with -- routing
+
+
+https://www.youtube.com/watch?v=75XFBIKLPQY
+lazy loading
+
+https://www.youtube.com/watch?v=qAeh4jZTjCk
+angular services
+
+https://www.youtube.com/watch?v=CacMOuzTiJU
+two way binding
+
+
+install using angular-cli
+use Angular routing adds app.routing
+use angular readme.md
+
+ng serve build and run
+viewport
+
+`ng generate directive|pipe|service|class|guard|interface|enum|module`.
+selector for app component
+<app-root>
+
+angular.json contains commands which will run when specific keywords
+are entered
+
+polyfills.ts takes care of browser incompatibilities
+
+ng build -> creates distributable in dist fodler
+assets -> images
+ng new my-dream-app
+
+ng class
+ngIf, ngFor
+boolean 
+
+when a new component is created, an update is made in the app-module.ts
+
+to include new component, include component's selector in app.component.html
+
+module -> classes inside
+export class
+
+first .ts is loaded and then .html
+
+routing:
+
+<router-outlet>
+
+1 add an array of json to routes
+    {path : 'welcome', component : WelcomeComponent},
+    {path : 'login', component : LoginComponent},
+
+2 add RouterModule.forRoot(routes) in imports
+
+3 constructor(private router : Router) {}
+ONLY ONE WAY OF DECLARING Router
+
+4 this.router.navigate(['welcome']);
+
+5 for route parameters, 
+add :var in routing module
+use ActivatedRoute.snapshot.paramMap.get() 
+
+or route using routerLink <a routerLink = "/todos">click</a>
+
+IMP : THE PARENT COMPONENT'S HTML IS ALWAYS DISPLAYED WITH THE CHILD HTML
+SO DON'T WRITE HTML IN INDEX.HTML AND APP.COMPONENT.HTML
+
+Bindings:
+interpolation {{}}
+(click) = f()
+[(ngModel)] = "userName", this var "userName" must be same in .ts file
+
+Can't bind to 'ngModel' since it isn't a known property of 'input'.
+import FormsModule in app.module
+
+Directives in Angular is a js class, which is declared as @directive. 
+We have 3 directives in Angular. The directives are listed below −
+
+Component Directives
+These form the main class having details of how the component should be processed, 
+instantiated and used at runtime.
+
+Structural Directives
+A structure directive basically deals with manipulating the dom elements. 
+Structural directives have a * sign before the directive. For example, *ngIf and *ngFor.
+
+Attribute Directives
+Attribute directives deal with changing the look and behavior of the dom element. 
+You can create your own directives as explained in the below section.
+
+Structural directive :
+*ngIf
+
+Can't bind to 'ngModel' since it isn't a known property of 'input'.
+import { CommonModule } from '@angular/common';  
+
+Attribute directive :
+
+export class ChangeTextDirective {
+   constructor(Element: ElementRef) {
+      console.log(Element);
+      Element.nativeElement.innerText = "Text is changed by changeText Directive.";
+   }
+}
+
+it uses ElementRef, which is used to add properties to the HTML element
+
+pipes in angular
+
+angular modules vs js modules
+angular module has annotation @NgModule
+while all classes are js modules
+
+main.ts ->
+RootModule bootstrap
+
+index.html -> app-root -> router-outlet
+
+sharing data b/w components
+https://www.youtube.com/watch?v=I317BhehZKM
+
+Just-in-time (JIT) compilation (also dynamic translation or run-time compilations) is a way of 
+executing computer code that involves compilation during execution of a program — at run time — 
+rather than prior to execution.
+
+Ahead-of-time compilation (AOT compilation) is the act of compiling a higher-level programming 
+language such as C, C++ or an intermediate representation such as Java bytecode or 
+.NET Framework Common Intermediate Language (CIL) code, into a native (system-dependent) machine code 
+so that the resulting binary file can execute natively.
+
+Just-in-Time (JIT), compiles your app in the browser at runtime.
+Ahead-of-Time (AOT), compiles your app at build time on the server.
+
+change detection in Angular
+https://medium.com/@bencabanes/angular-change-detection-strategy-an-introduction-819aaa7204e7
+
+Angular’s change detection is done in two steps, the first one is done by having the developer 
+updating the application model. He can do it by changing the property of a component or 
+emitting an event. Then Angular’s job will be to reflect the state of the model in the view, 
+by re-rendering it. Usually this means that Angular will update by sending an event and/or 
+by property bindings.
+
+Update the application model (developer);
+Reflect the state of the model in the view (Angular).
+
+Change detection goes through every components in the component tree (from top to bottom) 
+to check if the model it depends on changed.
+
+The way Angular runs the change detection by starting from the top and continuing until 
+it reaches the bottom, makes the system more predictable and more performant.
+
