@@ -6,7 +6,8 @@ server, this html doc has header, body and footer. the whole angular code
 is attached in the body. 
 <router-outlet>
 
-and then to optmize lazy loading is used, which calls a page only when 
+
+and then to optimize lazy loading is used, which calls a page only when 
 a request is made, so initial rendering is faster.
 
 
@@ -140,7 +141,7 @@ executing computer code that involves compilation during execution of a program 
 rather than prior to execution.
 
 Ahead-of-time compilation (AOT compilation) is the act of compiling a higher-level programming 
-language such as C, C++ or an intermediate representation such as Java bytecode or 
+language such as Java, C, C++ or an intermediate representation such as Java bytecode or 
 .NET Framework Common Intermediate Language (CIL) code, into a native (system-dependent) machine code 
 so that the resulting binary file can execute natively.
 
@@ -165,3 +166,37 @@ to check if the model it depends on changed.
 The way Angular runs the change detection by starting from the top and continuing until 
 it reaches the bottom, makes the system more predictable and more performant.
 
+
+A component instance has a lifecycle that starts when Angular instantiates the component class and 
+renders the component view along with its child views. The lifecycle continues with change detection, 
+as Angular checks to see when data-bound properties change, and updates both the view and the 
+component instance as needed. The lifecycle ends when Angular destroys the component instance and 
+removes its rendered template from the DOM. Directives have a similar lifecycle, as Angular creates, 
+updates, and destroys instances in the course of execution.
+
+ngOnInit() : Initialize the directive or component after Angular first displays the data-bound 
+properties and sets the directive or component's input properties.
+
+ngAfterViewInit()	: Respond after Angular initializes the component's views and child views, 
+
+ngDoCheck()	: Detect and act upon changes that Angular can't or won't detect on its own.
+
+ngOnDestroy() : Cleanup just before Angular destroys the directive or component. 
+Unsubscribe Observables and detach event handlers to avoid memory leaks.
+
+
+Issues faced:
+remove everything from app.component.html and only leave the router-outlet
+https://stackoverflow.com/questions/39410417/how-to-import-component-into-another-root-component-in-angular-2
+
+for service create a folder and then generate service
+https://stackoverflow.com/questions/37208801/property-map-does-not-exist-on-type-observableresponse
+https://stackoverflow.com/questions/58513178/typeerror-cannot-read-property-length-of-undefined-angular-8header
+use HttpHeaders
+
+https://stackoverflow.com/questions/48559580/angular5-getting-data-from-observable-to-component
+
+https://angular.io/guide/observables
+https://www.techiediaries.com/angular-11-tutorial-example-rest-crud-http-get-httpclient/
+https://angular.io/guide/router
+https://www.smashingmagazine.com/2018/11/a-complete-guide-to-routing-in-angular/

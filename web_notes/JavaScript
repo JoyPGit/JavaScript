@@ -61,6 +61,7 @@ let user = { 			//create the user object
     console.log(this.name+" "+this.age);  
   }
 };
+
 let premiumUser = {		//repeat of the above for this object
   ads: false
 };
@@ -72,13 +73,15 @@ premiumUser.name = "Paresh";
 premiumUser.showDetails();
 
 /**
- * it's basically like setting a parent class using __proto__.
+ * it's basically like setting a parent class using __proto__, but here parent object
  * This allows the object to have access to parent objects methods and variables
  */
 
 
 // Call, Apply and Bind
+
 // Bind
+
 let pokemon = {
   name:"pikachu",
   color:"yellow"
@@ -88,7 +91,7 @@ function showPokemon(){
   console.log(this.name, this.color);
 } 
 console.log("pokemon bind");
-showPokemon.bind(pokemon); // doesn't work
+showPokemon.bind(pokemon); // needs to be called
 
 // creates new object and binds pokemon. 'this' of pokemon == pokemon now
 let bound = showPokemon.bind(pokemon); 
@@ -253,6 +256,7 @@ for (let i = 0; i < 5; ++i) {
 }
 //REMEMBER TO WHICH i THE FUNC IS BOUND, IF VAR THEN THE REF EXISTS, 
 // IF LET THEN VAR IS GONE SO i IS LAST REFERENCED VAL
+
 /**
 Because let creates a new lexical environment with those names for 
 a) the initialiser expression 
@@ -290,6 +294,7 @@ async function printFiles () {
     console.log(contents);
   }
 }
+
 /** 
 Reading in parallel
 If you want to read the files in parallel, you cannot use forEach indeed. 
@@ -298,6 +303,7 @@ but you're throwing them away instead of awaiting them.
 
 Just use map instead, and you can await the array of promises that you'll get with Promise.all:
 */
+
 async function printFiles () {
   const files = await getFilePaths();
 
@@ -344,9 +350,15 @@ let closure = () => {
 // x();
 
 /** 
- * pratcical application is when we want to apply directives using ElementRef and
+ * practical application is when we want to apply directives using ElementRef and
  * this is used, it can bind to the context of 
 */
+
+
+// no parameters in setTimeout, using i as parameter causes NaN error
+for(let i = 0; i<5; i++){
+  setTimeout(()=>{console.log(i+1)}, 1000);
+}
 
 
 
@@ -360,3 +372,8 @@ const animals = ['ant', 'bison', 'camel', 'duck', 'elephant'];
 console.log(animals.slice(2));
 // expected output: Array ["camel", "duck", "elephant"]
 
+
+Array from variable?
+career cup question special num https://www.careercup.com/question?id=5204882156421120 
+
+character - charCodeAt

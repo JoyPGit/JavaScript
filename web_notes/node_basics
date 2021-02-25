@@ -4,7 +4,7 @@ Event loop is the simplest thing in V8 engine
 It basically checks if the stack is empty, then it runs something from teh callback queue.
 
 setTimeOut is a browser API, so any call to it is like an API call, and after it
-resolvers, it is added to the callback queue which is then processed as soon as 
+resolves, it is added to the callback queue which is then processed as soon as 
 the stack is empty.
 
 Any blocking code which can be moved to libuv is moved and a callback is 
@@ -48,7 +48,7 @@ const len = buf.write('\u00bd + \u00bc = \u00be', 0);
 
 
 
-CLUSTER
+CLUSTER (fork -> new engine)
 Spawn is a command designed to run system commands. 
 But no new V8 instance is created(unless of course your command is another Node command, 
 but in this case you should use fork!) and only one copy of your node module is active on the processor.
@@ -180,3 +180,16 @@ They do not help much with I/O-intensive work. The Node.js built-in asynchronous
 are more efficient than Workers can be.
 
 
+
+buffer.concat takes array
+server.on('request'); request is also an event
+async.waterfall
+new Buffer(150); buffer.write("hello") -> buffer.length?
+throw err "error" or throw nre err "error"?
+file to json or file to string?
+
+route not found error ? 404?
+
+DOMImplementation.hasFeature()?
+
+window.open()?
