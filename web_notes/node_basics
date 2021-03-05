@@ -1,14 +1,14 @@
 Single threaded means a single stack.
 
 Event loop is the simplest thing in V8 engine
-It basically checks if the stack is empty, then it runs something from teh callback queue.
+It basically checks if the stack is empty, then it runs something from the callback queue.
 
 setTimeOut is a browser API, so any call to it is like an API call, and after it
 resolves, it is added to the callback queue which is then processed as soon as 
 the stack is empty.
 
 Any blocking code which can be moved to libuv is moved and a callback is 
-registered. SO when it resolves, it is picked up from the callback queue 
+registered. So when it resolves, it is picked up from the callback queue 
 
 while is a blocking call, forEach is also blocking
 

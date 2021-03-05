@@ -1,0 +1,37 @@
+Does MongoDB database have tables for storing records?
+No. Instead of tables, MongoDB uses "Collections" to store data.
+
+23) Do the MongoDB databases have schema?
+Yes. MongoDB databases have dynamic schema. There is no need to define the structure to create collections.
+
+Does MongoDB support primary-key, foreign-key relationship?
+No. By Default, MongoDB doesn't support primary key-foreign key relationship.
+
+9) Can you achieve primary key - foreign key relationships in MongoDB?
+We can achieve primary key-foreign key relationship by embedding one document inside another. 
+For example: An address document can be embedded inside customer document.
+
+Explain the structure of ObjectID in MongoDB.
+ObjectID is a 12-byte BSON type. These are:
+
+4 bytes value representing seconds
+3 byte machine identifier
+2 byte process id
+3 byte counter
+
+How to do Transaction/locking in MongoDB?
+MongoDB doesn't use traditional locking or complex transaction with Rollback. MongoDB is designed to be 
+light weighted, fast and predictable to its performance. It keeps transaction support simple to 
+enhance performance.
+
+
+
+What is a Namespace in MongoDB?
+Namespace is a concatenation of the database name and the collection name. Collection, 
+in which MongoDB stores BSON objects.
+
+
+
+What is replica set in MongoDB?
+A replica can be specified as a group of mongo instances that host the same data set. In a replica set, 
+one node is primary, and another is secondary. All data is replicated from primary to secondary nodes.

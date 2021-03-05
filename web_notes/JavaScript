@@ -73,7 +73,7 @@ premiumUser.name = "Paresh";
 premiumUser.showDetails();
 
 /**
- * it's basically like setting a parent class using __proto__, but here parent object
+ * it's basically like setting a parent class using __proto__, but here parent object is set.
  * This allows the object to have access to parent objects methods and variables
  */
 
@@ -147,8 +147,6 @@ f(); // prints 2
 
 // https://stackoverflow.com/questions/762011/whats-the-difference-between-using-let-and-var
 
-
-
 /**
  *  Main difference is scoping rules. Variables declared by var keyword are scoped to the 
 immediate function body (hence the function scope) while let variables are scoped to the 
@@ -197,7 +195,7 @@ console.log("var i "+i); // 3
  * 
  * for(var i =0; i<..) is like var i = 0; for(i = 0; i<..)
  * var has function scope, so here the functions in the array refer to the global i 
- * as they maintain the refernce to that variable.
+ * as they maintain the reference to that variable.
  * 
  * If we use let then each function keeps the value of i at the time of the function's creation.
 */
@@ -254,7 +252,7 @@ for (let i = 0; i < 5; ++i) {
         console.log(i);
     }, 1000);  
 }
-//REMEMBER TO WHICH i THE FUNC IS BOUND, IF VAR THEN THE REF EXISTS, 
+// REMEMBER TO WHICH i THE FUNC IS BOUND, IF VAR THEN THE REF EXISTS, 
 // IF LET THEN VAR IS GONE SO i IS LAST REFERENCED VAL
 
 /**
