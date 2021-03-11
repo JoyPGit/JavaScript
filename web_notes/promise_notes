@@ -1,0 +1,129 @@
+PROMISES
+
+let a = 4; //change to see reject or resolve
+
+new Promise((resolve,reject)=>{
+   console.log(`few points which are demonstrated here:
+    1. then can't have a Promise in callback
+    2. if a Promise is rejected, it's value is passed to the catch and finally block
+    3. finally block runs no matter what
+    4. await works only with Promises
+    5. using return with Promise : using with await to assign a value; see allReturn; if Promise is not returned : return new Promise : in returnPro; x is undefined 
+    // why is promise pending? 
+    6. if any Promise is rejected, only way to catch it's value is to use a catch block.
+    7. Trick: if using await : 
+    7.1 return a Promise
+    7.2 add a catch block to the function call; it will catch the rejection
+
+    8. a Promise returns a value from either resolve or reject, but if returning a Promise, use await
+    
+    9. if a Promise is rejected and is used with await, then it's value will be undefined : let x = await f(); and f rejects a Promise, then x will be undefined.
+    --------------------------------`)
+  if(a ==4){
+    resolve({name:'swagat', val:a})
+  } else {
+    reject({name:'patra', val:a})
+    console.log(`if a Promise is rejected, the rejected value isn't passed to the then rather it is caught by the catch and the finally block`)
+  }
+}).then((val)=>{ //1st then
+  console.log('1st then');
+  console.log('>>>value resolved is ',val)
+  console.log('------')
+}).then(()=>{ //2nd then
+  console.log('2nd then');
+  console.log(`a new Promise can't be used directly in the then's callback. resolve and reject can't be used as params like this : .then((resolve,reject)=>{}). Either use the value resolved or create a new Promise as shown just after this : .then(()=>{ 
+    new Promise(res,rej)=>{...}
+    })`);
+  console.log('------')
+}).then(()=>{ //3rd then
+  console.log('3rd then');
+  new Promise ((resolve,rej)=>{
+    resolve({name:'gopal'})
+  }).catch((err)=>{console.log(`error is ${err}`)})
+  .finally(()=>{console.log('------');console.log('nested finally block')})
+  console.log('nested catch and finally for the Promise inside then')
+  console.log('------');
+}).then(()=>{ //4th then
+  console.log('4th then')
+  console.log('------');
+}).catch((error)=>{
+  console.log('error : ',error)
+}).finally(()=>{
+  console.log('------');
+  console.log('in finally') 
+   console.log('-------------------------------------------------');
+  console.log('allReturn calls 2 funcns synchronously; await works only on Promises');
+  allReturn();
+}).then(()=>{
+  console.log('*******************************************')
+  console.log('using normal Promise instead of await')
+  new Promise((res,rej)=>{
+    console.log('returnPro function alternate definition using Promise as an alternative to await');
+    res({message:'in returnPro'});
+    //or function call withput returning Promise
+    }).then(()=>{
+      returnPro1();
+      console.log('/////////////222')
+    })
+  console.log('/////////////111')
+})
+
+
+let returnPro = ()=>{
+  return new Promise((res,rej)=>{
+    if(a!=4){
+      res({message:'in returnPro'})
+      console.log('in returnPro')
+    } else rej({err:`value of a doesn't match in returnPro`});
+  })
+  //.catch((err)=>{
+  //   console.log('see how reject is used and use JSON.stringify : ('+
+  //   '$'+'{JSON.stringify(err)}')
+  //   console.log(`there's an error in returnPro ${JSON.stringify(err)}`)
+  // }) 
+}
+
+let returnPro1 = ()=>{
+  new Promise((res,rej)=>{
+    if(a!=4){
+      res({message:'in returnPro1'})
+      console.log('------');
+      console.log('in returnPro1, no error here')
+    } else rej({message:`value of a doesn't match in returnPro1`});
+  }).catch((message)=>{console.log(`there's an error in returnPro1 : ${JSON.stringify(message)}`)})
+  .finally(()=>{})
+}
+
+let allReturn = async ()=>{
+  let x = await returnPro().catch((err)=>{console.log('error in x',err)});
+  console.log(`to handle a Promise using await add a catch block for rejection. It will work for resolve only : await func().catch(()=>{})
+  or await new Promise() will work too
+  for rejection the value will be undefined. here x will be undefined`)
+  console.log(`x : ${JSON.stringify(x)}`)
+  await returnPro1();
+}
+
+// allReturn()
+// returnPro()
+
+//use repl.it and paste and see the o/p
+
+//or the other way around if returnPro should run before returnPro1
+
+/** return can't be used with Promise as any value of a Promise can be retrieved only with .then or .catch so 
+ * let z = new Promise((res,rej)=>{
+ * return 1}), won't work.
+ * 
+*/
+
+// let x = new Promise((res,rej)=>{
+//   rej({val:4})
+// })
+
+// x
+// .then((val)=>{
+//   console.log(val)
+// })
+// .catch((val)=>{
+//   console.log(val);
+// }).finally(()=>{console.log(12)})
